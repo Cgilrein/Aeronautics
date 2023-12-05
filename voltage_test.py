@@ -1,23 +1,24 @@
-import RPi.GPIO as GPIO
-import time
+from time import sleep
+from Adafruit_ADS1x15 import ADS1115
 
-# Set the GPIO mode to BCM
-GPIO.setmode(GPIO.BCM)
+ads = ADS1115()
 
-# Define the GPIO pin you want to read
-gpio_pin = 23  # Replace with your GPIO pin number
+# Define the GPIO pin you want to re
 
-# Set up the GPIO pin as an input
-GPIO.setup(gpio_pin, GPIO.IN)
+volts_channel = 1  # ADC channel for the voltage sensor on ADS1115
 
-try:
-    while True:
-        # Read the digital value on the GPIO pin
-        input_value = GPIO.input(gpio_pin)
-        print(f"Digital Value: {input_value}")
+def get_voltage():
+    try:
+        print("Reading voltage sensor...")
+        value = ads.read_adc(volts_channel, gain=1)
+        voltage = value / 32767.0 * 4.096  # Assuming gain=1 and VDD=4.096V
+        return round(voltage, 2)
+    except:
+        print("An error occurred while reading voltage sensor")
+        return None
 
-        time.sleep(1)
 
-except KeyboardInterrupt:
-    # Clean up GPIO on keyboard interrupt
-    GPIO.cleanup()
+while True:
+    value = get_voltage
+    print(value)
+    sleep(1)
