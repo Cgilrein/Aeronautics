@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 from time import sleep
 from Adafruit_ADS1x15 import ADS1115
 
