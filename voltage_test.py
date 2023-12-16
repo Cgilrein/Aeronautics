@@ -7,7 +7,6 @@ volts_channel = 1  # ADC channel for the voltage sensor on ADS1115
 def check_adc_connection():
     try:
         ads = ADS1115()
-        ads = ADS1115(address=0x48, busnum=1, gain=1, data_rate=8, ads1015=False, voltage_range=5.0)
         ads.read_adc(volts_channel, gain=1)
         return True
     except Exception as e:
@@ -17,9 +16,9 @@ def check_adc_connection():
 def get_voltage():
     try:
         # Read the analog value from the specified channel
-        value = ads.read_adc(volts_channel, gain=1)
+        value = ads.read_adc(volts_channel, gain=2/3)
 
-        raw_value = ads.read_adc(volts_channel, gain=1)
+        raw_value = ads.read_adc(volts_channel, gain=2/3)
         print(f"Raw ADC Value: {raw_value}")
 
         # Convert the raw ADC value to voltage (assuming 5V reference voltage)
