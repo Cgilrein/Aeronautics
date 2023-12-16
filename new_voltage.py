@@ -11,8 +11,8 @@ ads.gain = 1
 
 channel = AnalogIn(ads, ADS.P0)
 
-print("{:>5}\t{:>5}".format("raw","v"))
+print("{:>5}\t{:>5}".format("raw","v (times 5 to get actual)"))
 
 while True:
-    print("{:>5}\t{:>5.5f}".format(channel.value, channel.voltage))
+    print("{:>5}\t{:>5.5f}".format(channel.value, (channel.voltage)*5))
     time.sleep(0.5)
