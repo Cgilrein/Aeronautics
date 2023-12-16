@@ -19,6 +19,6 @@ def get_current():
 
 
 while True:
-    value = get_current
+    value = get_current()
     print(value)
     sleep(1)

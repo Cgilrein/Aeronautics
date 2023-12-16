@@ -19,6 +19,6 @@ def get_voltage():
 
 
 while True:
-    value = get_voltage
+    value = get_voltage()
     print(value)
     sleep(1)
