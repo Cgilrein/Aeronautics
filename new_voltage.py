@@ -1,10 +1,9 @@
 import time
-import board
-import busio
+import smbus
 from Adafruit_ADS1x15 import ADS1115
-from adafruit_ads1x15.analog_in import AnalogIn
 
-i2c = busio.I2C(board.SCL, board.SDA)
+# Create an I2C bus
+i2c = smbus.SMBus(1)
 
 ads = ADS1115(i2c)
 ads.gain = 1
