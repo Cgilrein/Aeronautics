@@ -35,8 +35,9 @@ def main():
     time = 0
     while time < (run_time * samples_per_sec):
         time_array.append(time)
-        print("Amps (Value, Actual): "+str(amps_channel.value)+"   "+str(amps_channel.value))
-        print("Voltage (Value, Actual * 5): " + str(volts_channel.value) + "   "+str(volts_channel.voltage * 5))
+        if time % 3 == 0: # Print Probing Values
+            print("Amps (Value, Actual): "+str(amps_channel.value)+"   "+str(amps_channel.value))
+            print("Voltage (Value, Actual * 5): " + str(volts_channel.value) + "   "+str(volts_channel.voltage * 5))
         amps.append(amps_channel.value)  # finish
         volts.append((volts_channel.voltage) * 5)
         time += sample_rate
