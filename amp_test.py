@@ -1,24 +1,18 @@
-from time import sleep
-from Adafruit_ADS1x15 import ADS1115
+import time
+import board
+import busio
+import adafruit_ads1x15.ads1115 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
 
-ads = ADS1115()
+i2c = busio.I2C(board.SCL, board.SDA)
 
-# Define the GPIO pin you want to re
+ads = ADS.ADS1115(i2c)
+ads.gain = 1
 
-amps_channel = 0  # ADC channel for the voltage sensor on ADS1115
+channel = AnalogIn(ads, ADS.P0)
 
-def get_current():
-    try:
-        print("Reading current sensor...")
-        value = ads.read_adc(amps_channel, gain=1)
-        amps = value / 32767.0 * 4.096  # Assuming gain=1 and VDD=4.096V
-        return round(amps, 2)
-    except:
-        print("An error occurred while reading current sensor")
-        return None
-
+print("{:>5}\t{:>5}".format("raw","i"))
 
 while True:
-    value = get_current()
-    print(value)
-    sleep(1)
+    print("{:>5}\t{:>5.5f}".format(channel.value, (channel.voltage)*5))
+    time.sleep(0.5)
