@@ -36,7 +36,7 @@ def main():
     while time < (run_time * samples_per_sec):
         time_array.append(time)
         if time % 3 == 0:  # Print Probing Values
-            print("\n")
+            print("Time: "+str(time)+" seconds")
             print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, amps_channel.voltage - 2.59))
             print("Voltage (Value, Actual * 5): {}   {:.5f}".format(volts_channel.value, volts_channel.voltage * 5))
             print("\n")
