@@ -1,11 +1,23 @@
 from time import sleep
-from Adafruit_ADS1x15 import ADS1115
-
+import board
+import busio
+import adafruit_ads1x15.ads1115 as ADS
+from adafruit_ads1x15.analog_in import AnalogIn
 ################ CONFIGS ##################################
+
 samples_per_sec = 4
 run_time = 600  # Requested runtime in seconds
-amps_channel = 0  # ADC channel for the current sensor on ADS1115
-volts_channel = 1  # ADC channel for the voltage sensor on ADS1115
+
+################# Inititalize ADC ############################
+
+i2c = busio.I2C(board.SCL, board.SDA)
+
+ads = ADS.ADS1115(i2c)
+ads.gain = 1
+
+volts_channel = AnalogIn(ads, ADS.P0)
+amps_channel = AnalogIn(ads, ADS.P1)
+
 ###########################################################
 
 time_array = []   # Time array
@@ -15,7 +27,6 @@ volts = []        # Voltage array
 sample_rate = 1 / samples_per_sec  # Sample rate in samples per second
 data_file = 'data.txt'             # File to save and read data
 
-ads = ADS1115()
 
 with open(data_file, 'w') as file:
     pass  # This does nothing, but it effectively clears the file
@@ -24,31 +35,13 @@ def main():
     time = 0
     while time < (run_time * samples_per_sec):
         time_array.append(time)
-        amps.append(get_amps())
-        volts.append(get_voltage())
+        print("Amps (Value, Actual): "+str(amps_channel.value)+"   "+str(amps_channel.Current))
+        print("Voltage (Value, Actual * 5): " + str(volts_channel.value) + "   "+str(volts_channel.voltage * 5))
+        amps.append(amps_channel.value)  # finish
+        volts.append((volts_channel.voltage) * 5)
         time += sample_rate
         save_data()
         sleep(sample_rate)
-
-def get_amps():
-    try:
-        print("Reading current sensor...")
-        value = ads.read_adc(amps_channel, gain=1)
-        voltage = value / 32767.0 * 4.096  # Assuming gain=1 and VDD=4.096V
-        return round(voltage, 2)
-    except:
-        print("An error occurred while reading current sensor")
-        return None
-
-def get_voltage():
-    try:
-        print("Reading voltage sensor...")
-        value = ads.read_adc(volts_channel, gain=1)
-        voltage = value / 32767.0 * 4.096  # Assuming gain=1 and VDD=4.096V
-        return round(voltage, 2)
-    except:
-        print("An error occurred while reading voltage sensor")
-        return None
 
 def save_data():
     with open(data_file, 'a') as file:
