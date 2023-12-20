@@ -37,7 +37,7 @@ def main():
         time_array.append(time)
         if time % 3 == 0: # Print Probing Values
             print("\n")
-            print("Amps (Value, Actual): "+str(amps_channel.value)+"   "+str(amps_channel.value))
+            print("Amps (Value, Actual): "+str(amps_channel.value)+"   "+str(amps_channel.voltage - 2.59))
             print("Voltage (Value, Actual * 5): " + str(volts_channel.value) + "   "+str(volts_channel.voltage * 5))
             print("\n")
         amps.append(amps_channel.value)  # finish
