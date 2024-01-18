@@ -43,7 +43,7 @@ def main():
 
         # Print Probing Values
         print("Time: {:.2f} seconds".format(current_time))
-        print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, amps_channel.voltage))
+        print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, (amps_channel.voltage - 2.59) * -10))
         print("Voltage (Value, Actual * 5): {}   {:.5f}".format(volts_channel.value, volts_channel.voltage * 5))
         print("\n")
 
