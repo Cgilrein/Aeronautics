@@ -3,7 +3,7 @@ import busio
 import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 import serial
-import time 
+from time import sleep
 import string
 import pynmea2  
 
@@ -68,7 +68,7 @@ def main():
         volts.append((volts_channel.voltage) * 5)
         time += sample_rate
         save_data(gps_error)
-        time.sleep(sample_rate)
+        sleep(sample_rate)
 
 def save_data(gps_error):
     with open(data_file, 'a') as file:
