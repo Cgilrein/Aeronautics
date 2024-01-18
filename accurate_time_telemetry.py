@@ -65,7 +65,7 @@ def main():
             print(gps)
         ########## END GPS ########################
             
-        amps.append(amps_channel.value) 
+        amps.append(amps_channel.value * -10) 
         volts.append((volts_channel.voltage) * 5)
         save_data(gps_error)
         sleep(sample_rate)
