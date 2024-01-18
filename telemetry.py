@@ -52,7 +52,9 @@ def main():
         dataout =pynmea2.NMEAStreamReader() 
         newdata=ser.readline()
         print("GPS raw data:   " + newdata.decode('utf-8'))
+        gps_error = True
         if '$GPRMC' in str(newdata):
+            gps_error = False
             print(newdata.decode('utf-8'))
             newmsg=pynmea2.parse(newdata.decode('utf-8'))  
             lat=newmsg.latitude 
@@ -65,16 +67,22 @@ def main():
         amps.append(amps_channel.value)  # finish
         volts.append((volts_channel.voltage) * 5)
         time += sample_rate
-        save_data()
+        save_data(gps_error)
         time.sleep(sample_rate)
 
-def save_data():
+def save_data(gps_error):
     with open(data_file, 'a') as file:
         latest_time = time_array[-1]
         latest_amp = amps[-1]
         latest_volt = volts[-1]
-        latest_gps = gps_array[-1]
-        file.write(f"{latest_time}\t{latest_amp}\t{latest_volt}\t{latest_gps}\n")
+        try:
+            latest_gps = gps_array[-1]
+        except:
+            print("No up-to-date GPS readings to save")
+        if gps_error:
+            file.write(f"{latest_time}\t{latest_amp}\t{latest_volt}\n")
+        else:
+            file.write(f"{latest_time}\t{latest_amp}\t{latest_volt}\t{latest_gps}\n")
 
 if __name__ == "__main__":
     print("Telemtry Script Began")
