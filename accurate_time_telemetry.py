@@ -43,7 +43,7 @@ def main():
 
         # Print Probing Values
         print("Time: {:.2f} seconds".format(current_time))
-        print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, ((amps_channel.value - 20410) * 0.001)))
+        print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, ((amps_channel.value - 20450) * 0.001)))
         print("Voltage (Value, Actual * 5): {}   {:.5f}".format(volts_channel.value, volts_channel.voltage * 5))
         print("\n")
 
@@ -65,7 +65,7 @@ def main():
             print(gps)
         ########## END GPS ########################
             
-        amps.append((amps_channel.value - 20410) * 0.001) 
+        amps.append((amps_channel.value - 20450) * 0.001) 
         volts.append((volts_channel.voltage) * 5)
         save_data(gps_error)
         sleep(sample_rate)
