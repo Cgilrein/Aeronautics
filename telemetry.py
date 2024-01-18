@@ -41,17 +41,18 @@ def main():
     while time < (run_time * samples_per_sec):
         time_array.append(time)
 
-        if time % 3 == 0:  # Print Probing Values
-            print("Time: "+str(time)+" seconds")
-            print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, amps_channel.voltage - 2.59))
-            print("Voltage (Value, Actual * 5): {}   {:.5f}".format(volts_channel.value, volts_channel.voltage * 5))
-            print("\n")
+    # Print Probing Values
+        print("Time: "+str(time)+" seconds")
+        print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, amps_channel.voltage - 2.59))
+        print("Voltage (Value, Actual * 5): {}   {:.5f}".format(volts_channel.value, volts_channel.voltage * 5))
+        print("\n")
 
         ######## GPS Section #####################
         ser=serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=1)
         dataout =pynmea2.NMEAStreamReader() 
         newdata=ser.readline()
-        print("GPS raw data:   " + newdata.decode('utf-8'))
+        print("GPS raw data: ",end="")
+        print(newdata)
         gps_error = True
         if '$GPRMC' in str(newdata):
             gps_error = False
@@ -64,7 +65,7 @@ def main():
             print(gps)
         ########## END GPS ########################
             
-        amps.append(amps_channel.value)  # finish
+        amps.append(amps_channel.value) 
         volts.append((volts_channel.voltage) * 5)
         time += sample_rate
         save_data(gps_error)
@@ -78,7 +79,7 @@ def save_data(gps_error):
         try:
             latest_gps = gps_array[-1]
         except:
-            print("No up-to-date GPS readings to save")
+            pass
         if gps_error:
             file.write(f"{latest_time}\t{latest_amp}\t{latest_volt}\n")
         else:
