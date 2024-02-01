@@ -9,7 +9,6 @@ import pynmea2
 
 ################ CONFIGS ##################################
 
-samples_per_sec = 4
 run_time = 600  # Requested runtime in seconds
 
 ################# Inititalize ADC ############################
@@ -29,17 +28,16 @@ amps = []         # Amp array
 volts = []        # Voltage array
 gps_array = []    # GPS coords array
 
-sample_rate = 1 / samples_per_sec  # Sample rate in samples per second
 data_file = 'data.txt'             # File to save and read data
 
 with open(data_file, 'w') as file:
     pass  # This does nothing, but it effectively clears the file
 
 def main():
-    start_time = time()
+    start_time = time()  # Take start time based on computers time
     while (time() - start_time) < run_time:
-        current_time = time() - start_time
-        time_array.append(current_time)
+        current_time = time() - start_time   # Get current time
+        time_array.append(current_time) 
 
         # Print Probing Values
         print("Time: {:.2f} seconds".format(current_time))
@@ -68,7 +66,7 @@ def main():
         amps.append((amps_channel.value - 20450) * 0.001) 
         volts.append((volts_channel.voltage) * 5)
         save_data(gps_error)
-        sleep(sample_rate)
+        sleep(0.1)  # Sleep for small time
 
 def save_data(gps_error):
     with open(data_file, 'a') as file:
