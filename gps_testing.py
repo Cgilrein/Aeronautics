@@ -6,7 +6,7 @@ while True:
     ser=serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=1)
     dataout =pynmea2.NMEAStreamReader() 
     newdata=ser.readline()
-    #print(newdata)
+    print(newdata)
     if '$GPRMC' in str(newdata):
         print(newdata.decode('utf-8'))
         newmsg=pynmea2.parse(newdata.decode('utf-8'))  
