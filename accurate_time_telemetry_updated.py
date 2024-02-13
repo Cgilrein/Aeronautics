@@ -33,7 +33,6 @@ data_file = 'data.txt'  # File to save and read data
 
 lat_list = []  # Store lat data 
 lng_list = []  # Store lng data 
-reset = False
 
 with open(data_file, 'w') as file:
     pass  # This does nothing, but it effectively clears the file
@@ -59,10 +58,6 @@ def main():
         newdata = ser.readline()
         gps_error = True
         if '$GPRMC' in str(newdata):
-            if reset:
-                lat_list = []
-                lng_list = []
-                reset = False
             gps_error = False
             print(newdata.decode('utf-8'))
             newmsg = pynmea2.parse(newdata.decode('utf-8'))  
@@ -71,9 +66,9 @@ def main():
             gps = "Latitude={} and Longitude={}".format(lat, lng)
             gps_array.append(gps)
             print(gps) # Prints lat/lng info continuously
-
+            
             # Check if a minute has passed since the last avg lat/lng calculation
-            if current_time - last_minute_start >= minute_interval:
+            """if current_time - last_minute_start >= minute_interval:
                 # Calculate and print avgs if lat/lng lists contain data 
                 if lat_list:
                     avg_lat = sum(lat_list) / len(lat_list)
@@ -89,7 +84,7 @@ def main():
             else:
                 # Store lat/lng data for later averaging
                 lat_list.append(lat)
-                lng_list.append(lng)
+                lng_list.append(lng)"""
 
         ########## END GPS ########################
 
