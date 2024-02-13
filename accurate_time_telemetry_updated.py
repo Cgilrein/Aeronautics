@@ -33,6 +33,7 @@ data_file = 'data.txt'  # File to save and read data
 
 lat_list = []  # Store lat data 
 lng_list = []  # Store lng data 
+reset = False
 
 with open(data_file, 'w') as file:
     pass  # This does nothing, but it effectively clears the file
@@ -56,10 +57,12 @@ def main():
         ser = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=1)
         dataout = pynmea2.NMEAStreamReader()
         newdata = ser.readline()
-        print("GPS raw data: ", end="")
-        print(newdata)
         gps_error = True
         if '$GPRMC' in str(newdata):
+            if reset:
+                lat_list = []
+                lng_list = []
+                reset = False
             gps_error = False
             print(newdata.decode('utf-8'))
             newmsg = pynmea2.parse(newdata.decode('utf-8'))  
@@ -78,8 +81,8 @@ def main():
                     print(f"Minute {minute_count + 1}: Average Latitude: {avg_lat:.6f}, Average Longitude: {avg_lng:.6f}")
 
                 # Reset lists for the next minute
-                lat_list = []
-                lng_list = []
+                
+                reset = True
                 minute_count += 1
                 last_minute_start = current_time
 
