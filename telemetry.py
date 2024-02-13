@@ -10,7 +10,7 @@ import pynmea2
 ################ CONFIGS ##################################
 
 run_time = 600  # Requested runtime in seconds
-minute_interval = 60  # Interval for calculating lat/lng averages 
+#minute_interval = 60  # Interval for calculating lat/lng averages 
 
 ################# Inititalize ADC ############################
 
@@ -31,8 +31,8 @@ gps_array = []   # GPS coords array
 
 data_file = 'data.txt'  # File to save and read data
 
-lat_list = []  # Store lat data 
-lng_list = []  # Store lng data 
+#lat_list = []  # Store lat data 
+#lng_list = []  # Store lng data 
 
 with open(data_file, 'w') as file:
     pass  # This does nothing, but it effectively clears the file
