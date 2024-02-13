@@ -19,8 +19,11 @@ while True:
     actual_current = input("Use multimeter to probe real world current, input value here: ")
     print("Test will run for 10 seconds... Starting in")
     print("3")
+    time.sleep(1)
     print("2")
+    time.sleep(1)
     print("1")
+    time.sleep(1)
     for loop in range(100):
         print("{:>5}\t{:>5.5f}".format(channel.value, (channel.voltage)))
         currents_value.append(channel.value)
