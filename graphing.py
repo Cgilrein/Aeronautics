@@ -8,9 +8,7 @@ V = []
 P = []
 Velocity_ft = []
 Velocity_m = []
-GPS_data = []
-cords = []
-distance_change= []
+lat = [], lng = []
 save_directory = "graphs"
 
 def main():
@@ -44,31 +42,16 @@ def read_data():
             t.append(float(data[0]))
             A.append(float(data[1]))
             V.append(float(data[2]))
-            GPS_data.append(float(data[3]))
+            lat.append(float(data[3]))
+            lng.append(float(data[4]))
+
 
 def calculate_power():
     for index, item in enumerate(t):
         P.append(A[index]*V[index])  # P = i * v for eah time interval
 
 def process_gps():
-    previous_lat = None
-    previous_long = None
-
-    # Parsing GPS data
-    for index, item in enumerate(GPS_data):
-        # Insert cords into a list of (Lat,Long) formatted tuples
-        cords.append(GPS_data.strip("i"),GPS_data.strip("i"))
-    for index, coordinates in enumerate(cords):
-        if index == 0:
-            distance_change.append(0)
-        else:
-            change_y = (coordinates[0] - previous_lat) * 364000 # One degree lat = 364000 feet
-            change_x = (coordinates[1] - previous_long) * 288200 # One degree long = 288200 feet
-            # Use pythag. theorem to caclulate distance traveled
-            total_change = np.sqrt((change_x^2) + (change_y^2))  # Total change in feet from last data point
-            distance_change.append(total_change)
-            # Set current cords to prev. for next calculation
-            previous_lat, previous_long = coordinates[0], coordinates[1]
+    pass
 
 def calculate_velocity():
     for index, value in enumerate(t):

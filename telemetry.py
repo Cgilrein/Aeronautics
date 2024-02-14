@@ -27,7 +27,8 @@ amps_channel = AnalogIn(ads, ADS.P1)
 time_array = []  # Time array
 amps = []        # Amp array
 volts = []       # Voltage array
-gps_array = []   # GPS coords array
+lat_array = [], lng_array =[]   # GPS coords arrays
+
 
 data_file = 'data.txt'  # File to save and read data
 
@@ -63,8 +64,10 @@ def main():
             newmsg = pynmea2.parse(newdata.decode('utf-8'))  
             lat = newmsg.latitude 
             lng = newmsg.longitude 
+            lat_array.append(lat)
+            lng_array.append(lng)
+
             gps = "Latitude={} and Longitude={}".format(lat, lng)
-            gps_array.append(gps)
             print(gps) # Prints lat/lng info continuously
             
             # Check if a minute has passed since the last avg lat/lng calculation
@@ -99,13 +102,14 @@ def save_data(gps_error):
         latest_amp = amps[-1]
         latest_volt = volts[-1]
         try:
-            latest_gps = gps_array[-1]
+            latest_lat = lat_array[-1]
+            latest_lng = lng_array[-1]
         except:
             pass
         if gps_error:
             file.write(f"{latest_time:.2f}\t{latest_amp}\t{latest_volt}\n")
         else:
-            file.write(f"{latest_time:.2f}\t{latest_amp}\t{latest_volt}\t{latest_gps}\n")
+            file.write(f"{latest_time:.2f}\t{latest_amp}\t{latest_volt}\t{latest_lat}\t{latest_lng}\n")
 
 if __name__ == "__main__":
     print("Telemetry Script Began")
