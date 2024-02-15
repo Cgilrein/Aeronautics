@@ -33,9 +33,6 @@ lng_array =[]   # GPS coords arrays
 
 data_file = 'data.txt'  # File to save and read data
 
-#lat_list = []  # Store lat data 
-#lng_list = []  # Store lng data 
-
 with open(data_file, 'w') as file:
     pass  # This does nothing, but it effectively clears the file
 
@@ -61,7 +58,7 @@ def main():
         gps_error = True
         if '$GPRMC' in str(newdata):
             gps_error = False
-            print(newdata.decode('utf-8'))
+            #print(newdata.decode('utf-8'))
             newmsg = pynmea2.parse(newdata.decode('utf-8'))  
             lat = newmsg.latitude 
             lng = newmsg.longitude 
