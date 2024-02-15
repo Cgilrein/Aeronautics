@@ -14,7 +14,6 @@ save_directory = "graphs"
 def main():
     read_data() # Gather data from text 
     calculate_power()
-    process_gps()
     calculate_velocity()
 
     # Create graph
@@ -49,9 +48,6 @@ def read_data():
 def calculate_power():
     for index, item in enumerate(t):
         P.append(A[index]*V[index])  # P = i * v for eah time interval
-
-def process_gps():
-    pass
 
 def calculate_velocity():
     for index, value in enumerate(t):
