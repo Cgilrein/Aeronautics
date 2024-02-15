@@ -4,6 +4,7 @@ import adafruit_ads1x15.ads1115 as ADS
 from adafruit_ads1x15.analog_in import AnalogIn
 import serial
 from time import sleep, time
+import datetime
 #import string
 import pynmea2
 
@@ -30,9 +31,10 @@ volts = []       # Voltage array
 lat_array = []
 lng_array =[]   # GPS coords arrays
 
+current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+current_time = datetime.datetime.now().strftime('%H-%M-%S')
 
-data_file = 'data.txt'  # File to save and read data
-
+data_file = current_date + current_time+'__data.txt'
 with open(data_file, 'w') as file:
     pass  # This does nothing, but it effectively clears the file
 
