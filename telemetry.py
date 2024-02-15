@@ -7,6 +7,7 @@ from time import sleep, time
 import datetime
 #import string
 import pynmea2
+import os
 
 ################ CONFIGS ##################################
 
@@ -31,10 +32,20 @@ volts = []       # Voltage array
 lat_array = []
 lng_array =[]   # GPS coords arrays
 
+# Get the current date and time
 current_date = datetime.datetime.now().strftime('%Y-%m-%d')
 current_time = datetime.datetime.now().strftime('%H-%M-%S')
 
-data_file = current_date + current_time+'__data.txt'
+# Define the directory name and file name
+directory_name = 'data'
+filename = f"{current_date}__{current_time}__data.txt"
+data_file = os.path.join(directory_name, filename)
+
+# Create the directory if it doesn't exist
+if not os.path.exists(directory_name):
+    os.makedirs(directory_name)
+
+# Create or clear the data file
 with open(data_file, 'w') as file:
     pass  # This does nothing, but it effectively clears the file
 
