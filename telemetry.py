@@ -27,7 +27,8 @@ amps_channel = AnalogIn(ads, ADS.P1)
 time_array = []  # Time array
 amps = []        # Amp array
 volts = []       # Voltage array
-lat_array = [], lng_array =[]   # GPS coords arrays
+lat_array = []
+lng_array =[]   # GPS coords arrays
 
 
 data_file = 'data.txt'  # File to save and read data
