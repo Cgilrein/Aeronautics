@@ -18,4 +18,4 @@ GPS_dist = round(dist * 1000, 2)
 error_distance =((actual_dist - GPS_dist) / actual_dist) * 100
 
 print("GPS-determined distance between location A and B:", GPS_dist, "meters")
-print("GPS distance is off by a margin of:", error_distance, "%")
+print("GPS distance is off by a margin of:", abs(error_distance), "%")

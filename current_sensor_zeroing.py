@@ -30,13 +30,13 @@ while True:
         currents_voltage.append(channel.voltage)
         time.sleep(0.1)
     print("RESULTS")
-    print("Actual current of "+str(actual_current) + "corresponds to")
+    print("Actual current of "+str(actual_current) + "corresponds to ")
     
     average_value = 0
     average_voltage = 0
     for loop, value in enumerate(currents_value):
-        average_voltage += currents_voltage(loop) 
-        average_value += currents_value(loop)
+        average_voltage += currents_voltage[loop]
+        average_value += currents_value[loop]
 
     average_value = average_value / len(currents_value)
     average_voltage = average_voltage / len(currents_voltage)
