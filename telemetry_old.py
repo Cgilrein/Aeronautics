@@ -69,36 +69,20 @@ def main():
         dataout = pynmea2.NMEAStreamReader()
         newdata = ser.readline()
         gps_error = True
-        if '$GPRMC' in str(newdata):
-            gps_error = False
-            #print(newdata.decode('utf-8'))
-            newmsg = pynmea2.parse(newdata.decode('utf-8'))  
-            lat = newmsg.latitude 
-            lng = newmsg.longitude 
-            lat_array.append(lat)
-            lng_array.append(lng)
+        try:
+            if '$GPRMC' in str(newdata):
+                #print(newdata.decode('utf-8'))
+                newmsg = pynmea2.parse(newdata.decode('utf-8'))  
+                lat = newmsg.latitude 
+                lng = newmsg.longitude 
+                lat_array.append(lat)
+                lng_array.append(lng)
 
-            gps = "Latitude={} and Longitude={}".format(lat, lng)
-            print(gps) # Prints lat/lng info continuously
-            
-            # Check if a minute has passed since the last avg lat/lng calculation
-            """if current_time - last_minute_start >= minute_interval:
-                # Calculate and print avgs if lat/lng lists contain data 
-                if lat_list:
-                    avg_lat = sum(lat_list) / len(lat_list)
-                    avg_lng = sum(lng_list) / len(lng_list)
-                    print(f"Minute {minute_count + 1}: Average Latitude: {avg_lat:.6f}, Average Longitude: {avg_lng:.6f}")
-
-                # Reset lists for the next minute
-                
-                reset = True
-                minute_count += 1
-                last_minute_start = current_time
-
-            else:
-                # Store lat/lng data for later averaging
-                lat_list.append(lat)
-                lng_list.append(lng)"""
+                gps = "Latitude={} and Longitude={}".format(lat, lng)
+                gps_error = False
+                print(gps) # Prints lat/lng info continuously
+        except:
+            print("Error Retrieving GPS")
 
         ########## END GPS ########################
 
