@@ -14,5 +14,5 @@ channel = AnalogIn(ads, ADS.P1)
 print("{:>5}\t{:>5}".format("raw","i"))
 
 while True:
-    print("{:>5}\t{:>5.5f}".format(channel.value, ((channel.voltage * 0.0708) - 0.183)))
+    print("{:>5}\t{:>5.5f}".format(channel.value, (channel.voltage * -0.0103 + 2.53))
     time.sleep(0.5)
