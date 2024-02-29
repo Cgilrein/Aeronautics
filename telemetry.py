@@ -89,7 +89,7 @@ def main():
         amps.append(amps_channel.voltage * -97.2 + 246) 
         volts.append((volts_channel.voltage) * 5)
         save_data(gps_error)
-        sleep(0.1)  # Sleep for small time
+        sleep(0.01)  # Sleep for small time
 
 def save_data(gps_error):
     with open(data_file, 'a') as file:
