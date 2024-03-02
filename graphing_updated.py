@@ -12,7 +12,7 @@ lat_lng = [] # list of tuple coordinates
 lat, lng = [], []
 
 
-def read_data(): # debugged alr
+def read_data(): 
     with open("sample_circuit_data.txt", 'r') as f1:
         for line in f1:
             data = re.split(r'\s+', line.strip())  # Splits at whitespace chars
