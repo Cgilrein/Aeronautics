@@ -13,13 +13,13 @@ lat, lng = [], []
 
 
 def read_data(): 
-    with open("sample_circuit_data.txt", 'r') as f1:
+    with open("circuit_data.txt", 'r') as f1: # hard code appropriate file names 
         for line in f1:
             data = re.split(r'\s+', line.strip())  # Splits at whitespace chars
             t_circuit.append(float(data[0]))    
             a.append(float(data[1]))
             v.append(float(data[2]))
-    with open("sample_gps_data.txt", 'r') as f2:
+    with open("gps_data.txt", 'r') as f2:
         for line in f2:
             try: 
                 data = re.split(r'\s+', line.strip())  
