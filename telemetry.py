@@ -31,7 +31,6 @@ amps = []        # Amp array
 volts = []       # Voltage array
 lat_array = []
 lng_array =[]   # GPS coords arrays
-
 # Get the current date and time
 current_date = datetime.datetime.now().strftime('%Y-%m-%d')
 current_time = datetime.datetime.now().strftime('%H-%M-%S')
@@ -55,9 +54,9 @@ for directory in [circuit_data_directory, gps_data_directory]:
 for data_file in [circuit_data_file, gps_data_file]:
     with open(data_file, 'w') as file:
         pass  # This does nothing, but it effectively clears the file
+start_time = time()
 
 def probe_circuit():
-    start_time = time()  # Take start time based on computer time
 
     while (time() - start_time) < run_time:
         current_time = time() - start_time  # Get current time for circuit probing
@@ -75,7 +74,6 @@ def probe_circuit():
         sleep(0.01)  # Sleep for small time
 
 def probe_gps():
-    start_time = time()
     
     while (time() - start_time) < run_time:
         try:
@@ -108,7 +106,7 @@ def save_circuit_data():
         latest_amp = amps[-1]
         latest_volt = volts[-1]
         file.write(f"{latest_time:.2f}\t{latest_amp}\t{latest_volt}\n")
-
+"""
 def save_gps_data(gps_error, gps_time_array):
     with open(gps_data_file, 'a') as file:
         try:
@@ -120,7 +118,21 @@ def save_gps_data(gps_error, gps_time_array):
             file.write(f"GPS Error\n")
         else:
             for i in range(len(gps_time_array)):
-                file.write(f"{gps_time_array[i]:.2f}\t{latest_lat}\t{latest_lng}\n")
+                file.write(f"{gps_time_array[i]:.2f}\t{latest_lat}\t{latest_lng}\n")"""
+
+def save_gps_data(gps_error, gps_time_array, start_time):
+    with open(gps_data_file, 'a') as file:
+        try:
+            latest_lat = lat_array[-1]
+            latest_lng = lng_array[-1]
+        except IndexError:
+            latest_lat = latest_lng = ""
+        if gps_error:
+            file.write(f"GPS Error\n")
+        else:
+            for elapsed_time in gps_time_array:
+                absolute_time = start_time + elapsed_time
+                file.write(f"{absolute_time:.2f}\t{latest_lat}\t{latest_lng}\n")
 
 if __name__ == "__main__":
     print("Telemetry Script Began")
