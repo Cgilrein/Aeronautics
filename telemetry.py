@@ -80,7 +80,6 @@ def probe_gps():
             ser = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=1)
             dataout = pynmea2.NMEAStreamReader()
             newdata = ser.readline()
-            gps_error = True
             if '$GPRMC' in str(newdata):
                 newmsg = pynmea2.parse(newdata.decode('utf-8'))
                 lat = newmsg.latitude
@@ -89,15 +88,14 @@ def probe_gps():
                 lng_array.append(lng)
 
                 gps = "Latitude={} and Longitude={}".format(lat, lng)
-                gps_error = False
                 print(gps) # Prints lat/lng info continuously
                 # Record GPS time
                 current_time = time() - start_time  # Get current time for circuit probing
                 gps_time_array.append(current_time)
+                save_gps_data()
         except:
             print("Error Retrieving GPS")
 
-        save_gps_data(gps_error, gps_time_array)
         sleep(0.1)  # Sleep for small time
 
 def save_circuit_data():
@@ -107,7 +105,7 @@ def save_circuit_data():
         latest_volt = volts[-1]
         file.write(f"{latest_time:.2f}\t{latest_amp}\t{latest_volt}\n")
 
-def save_gps_data(gps_error, gps_time_array):
+def save_gps_data():
     with open(gps_data_file, 'a') as file:
         latest_lat = lat_array[-1]
         latest_lng = lng_array[-1]
