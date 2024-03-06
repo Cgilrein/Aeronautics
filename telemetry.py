@@ -11,7 +11,7 @@ import threading
 
 ################ CONFIGS ##################################
 
-run_time = 600  # Requested runtime in seconds
+run_time = 600000  # Requested runtime 
 
 ################# Inititalize ADC ############################
 
