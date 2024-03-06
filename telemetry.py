@@ -106,33 +106,13 @@ def save_circuit_data():
         latest_amp = amps[-1]
         latest_volt = volts[-1]
         file.write(f"{latest_time:.2f}\t{latest_amp}\t{latest_volt}\n")
-"""
+
 def save_gps_data(gps_error, gps_time_array):
     with open(gps_data_file, 'a') as file:
-        try:
-            latest_lat = lat_array[-1]
-            latest_lng = lng_array[-1]
-        except IndexError:
-            latest_lat = latest_lng = ""
-        if gps_error:
-            file.write(f"GPS Error\n")
-        else:
-            for i in range(len(gps_time_array)):
-                file.write(f"{gps_time_array[i]:.2f}\t{latest_lat}\t{latest_lng}\n")"""
-
-def save_gps_data(gps_error, gps_time_array, start_time):
-    with open(gps_data_file, 'a') as file:
-        try:
-            latest_lat = lat_array[-1]
-            latest_lng = lng_array[-1]
-        except IndexError:
-            latest_lat = latest_lng = ""
-        if gps_error:
-            file.write(f"GPS Error\n")
-        else:
-            for elapsed_time in gps_time_array:
-                absolute_time = start_time + elapsed_time
-                file.write(f"{absolute_time:.2f}\t{latest_lat}\t{latest_lng}\n")
+        latest_lat = lat_array[-1]
+        latest_lng = lng_array[-1]
+        latest_time = gps_time_array[-1]
+        file.write(f"{latest_time:.2f}\t{latest_lat}\t{latest_lng}\n")
 
 if __name__ == "__main__":
     print("Telemetry Script Began")
