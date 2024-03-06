@@ -26,6 +26,7 @@ amps_channel = AnalogIn(ads, ADS.P1)
 ###########################################################
 
 time_array = []  # Time array for circuit probing
+gps_time_array = []  # Time array for GPS probing
 amps = []        # Amp array
 volts = []       # Voltage array
 lat_array = []
@@ -74,7 +75,6 @@ def probe_circuit():
         sleep(0.01)  # Sleep for small time
 
 def probe_gps():
-    gps_time_array = []  # Time array for GPS probing
     start_time = time()
     
     while (time() - start_time) < run_time:
@@ -93,9 +93,9 @@ def probe_gps():
                 gps = "Latitude={} and Longitude={}".format(lat, lng)
                 gps_error = False
                 print(gps) # Prints lat/lng info continuously
-                
                 # Record GPS time
-                gps_time_array.append(time() - start_time)
+                current_time = time() - start_time  # Get current time for circuit probing
+                gps_time_array.append(current_time)
         except:
             print("Error Retrieving GPS")
 
