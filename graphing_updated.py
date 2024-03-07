@@ -66,12 +66,6 @@ def plot_volts():
     plt.legend()
     plt.show()
 
-def plot_power():
-    for current_val, volt_val in a, v:
-        power_val = round(current_val * volt_val, 2)
-        power.append(power_val)
-    print(power)
-
 
 def plot_power():
     for i in range(len(a)):
