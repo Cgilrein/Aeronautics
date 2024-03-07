@@ -10,16 +10,17 @@ a = []
 v = []
 lat_lng = [] # list of tuple coordinates 
 lat, lng = [], []
+power = []
 
 
 def read_data(): 
-    with open("circuit_data.txt", 'r') as f1: # hard code appropriate file names 
+    with open("sample_circuit_data.txt", 'r') as f1: # hard code appropriate file names 
         for line in f1:
             data = re.split(r'\s+', line.strip())  # Splits at whitespace chars
             t_circuit.append(float(data[0]))    
             a.append(float(data[1]))
             v.append(float(data[2]))
-    with open("gps_data.txt", 'r') as f2:
+    with open("sample_gps_data.txt", 'r') as f2:
         for line in f2:
             try: 
                 data = re.split(r'\s+', line.strip())  
@@ -66,6 +67,18 @@ def plot_volts():
     plt.show()
 
 
+def plot_power():
+    for i in range(len(a)):
+        power_val = round(a[i] * v[i], 2)
+        power.append(power_val)
+    plt.plot(t_circuit, power, label='Power (W)', marker='o', color='red')
+    plt.xlabel('Time')
+    plt.ylabel('Power (W)')
+    plt.title('Power vs Time')
+    plt.legend()
+    plt.show()
+
+
 def plot_velocity():
     velocity = [0.0]  
     for i in range(1, len(lat_lng)):
@@ -84,12 +97,14 @@ def plot_velocity():
     plt.legend()
     plt.show()
 
+
 def main():
     read_data()
     plot_position()
     plot_amps()
     plot_volts()
     #plot_velocity() #uncomment this if you want velocity vs time graph
+    plot_power()
 
 if __name__ == "__main__":
     main()
