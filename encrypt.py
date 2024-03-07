@@ -1,4 +1,4 @@
-key = b''
+key = b''  # Provide a non-empty key here
 
 def encrypt(token):
     encrypted_data = bytearray()
