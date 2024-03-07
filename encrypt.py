@@ -16,7 +16,7 @@ def decrypt(encrypted_data):
 token = ""
 encrypted_token = "0d0703370725440a3c3f18381a25190a230c3426180216385c194a5e0006105f0820413f053b392e"
 
-if (input("Encrypting? y/n: ")):
+if (input("Encrypting? y/n: ") == "y"):
     encrypted_token = encrypt(token)
     print("Encrypted:", encrypted_token)
 else:
