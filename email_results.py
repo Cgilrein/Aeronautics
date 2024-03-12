@@ -12,17 +12,14 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 
-
-
-
 CLIENT_FILE = os.path.join("api_tokens\\client.json")
 API_NAME = "gmail"
 API_VERSION = "v1"
 SCOPES = ['https://mail.google.com/']
 rpi_email = ""
 aero_email = ""
-gps_data_path = "./gps_data/"
-circuit_data_path = "./circuit_data/"
+gps_data_path = "\\gps_data\\"
+circuit_data_path = "\\circuit_data\\"
 
 def main():
     print("Email being drafted...")
@@ -94,7 +91,7 @@ def send(body=None,subject=None):
 
         message.set_content(body)
 
-        message['To'] = aero_email
+        message['To'] = aero_email,"camgilrein@gmail.com"
         message['From'] = rpi_email
         message['Subject'] = subject
 
