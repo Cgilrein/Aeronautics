@@ -118,8 +118,8 @@ if __name__ == "__main__":
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
-    GPIO.setup(27,GPIO.OUT)
-    GPIO.output(27,GPIO.HIGH)   # Light up status LED
+    GPIO.setup(16,GPIO.OUT)
+    GPIO.output(16,GPIO.HIGH)   # Light up status LED
 
     # Start the circuit probing thread
     circuit_thread = threading.Thread(target=probe_circuit)
