@@ -8,6 +8,7 @@ import datetime
 import pynmea2
 import os
 import threading
+import RPi.GPIO as GPIO
 
 ################ CONFIGS ##################################
 
@@ -114,6 +115,11 @@ def save_gps_data():
 
 if __name__ == "__main__":
     print("Telemetry Script Began")
+
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(27,GPIO.OUT)
+    GPIO.output(27,GPIO.HIGH)   # Light up status LED
 
     # Start the circuit probing thread
     circuit_thread = threading.Thread(target=probe_circuit)

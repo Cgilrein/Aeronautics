@@ -76,10 +76,11 @@ def convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0):
 def draft():
     now = datetime.date.today()
     now = now.strftime("%m/%d/%y")
-    subject = "Daily Report for " + now
+    subject = "Aeronautics Test flight  " + now
     message = ""
-
     return message,subject
+
+
 
 def send(body=None,subject=None):
 
@@ -91,6 +92,8 @@ def send(body=None,subject=None):
 
         message.set_content(body)
 
+        message.add_attachment(circuit_data_path + circuit_data)
+        message.add_attachment(gps_data_path + coordinate_data)
         message['To'] = aero_email,"camgilrein@gmail.com"
         message['From'] = rpi_email
         message['Subject'] = subject
