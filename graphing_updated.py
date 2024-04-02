@@ -14,21 +14,23 @@ power = []
 
 
 def read_data(): 
-    with open("sample_circuit_data.txt", 'r') as f1: # hard code appropriate file names 
+    with open("./circuit_data/2024-04-02__18-06-49__circuit_data.txt", 'r') as f1: # hard code appropriate file names 
         for line in f1:
             data = re.split(r'\s+', line.strip())  # Splits at whitespace chars
             t_circuit.append(float(data[0]))    
             a.append(float(data[1]))
             v.append(float(data[2]))
-    with open("sample_gps_data.txt", 'r') as f2:
+    with open("./gps_data/2024-04-02__18-06-44__gps_data.txt", 'r') as f2:
         for line in f2:
-            try: 
-                data = re.split(r'\s+', line.strip())  
-                if data[1] and data[2]: # appends appropriate lists if long/lat data is available
+            data = re.split(r'\s+', line.strip())
+            if len(data) >= 3:  # Ensure there are enough data elements
+                try:
                     t_gps.append(float(data[0]))
                     lat_lng.append((float(data[1]), float(data[2])))
-            except IndexError: # skips line if there is no lat/lng data so not to mess up indexing 
-                pass
+                except ValueError:
+                    print("Error parsing GPS data:", line.strip())
+            else:
+                print("Incomplete GPS data:", line.strip())
 
 
 def plot_position():
@@ -38,8 +40,10 @@ def plot_position():
         lng.append(coord[1])
     # calculates net distance travelled using lat_lng and t_gps
     for i in range(1, len(lat_lng)):
-        distance = geodesic((lat[i-1], lng[i-1]), (lat[i], lng[i])).meters
-        meters_traveled.append(meters_traveled[-1] + distance)
+        # Check if there are enough GPS coordinates available
+        if i < len(lat_lng):
+            distance = geodesic((lat[i-1], lng[i-1]), (lat[i], lng[i])).meters
+            meters_traveled.append(meters_traveled[-1] + distance)
 
     plt.plot(t_gps, meters_traveled, label='Meters Traveled', marker='o')
     plt.xlabel('Time')
@@ -101,10 +105,10 @@ def plot_velocity():
 def main():
     read_data()
     plot_position()
-    plot_amps()
-    plot_volts()
-    #plot_velocity() #uncomment this if you want velocity vs time graph
-    plot_power()
+    #plot_amps()
+    #plot_volts()
+    plot_velocity() #uncomment this if you want velocity vs time graph
+    #plot_power()
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,1 @@
+not os.path.exists(os.path.join(working_dir, token_dir))
