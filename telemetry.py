@@ -13,6 +13,7 @@ import RPi.GPIO as GPIO
 ################ CONFIGS ##################################
 
 run_time = 600000  # Requested runtime 
+enablePrinting = False
 
 ################# Inititalize ADC ############################
 
@@ -32,6 +33,7 @@ amps = []        # Amp array
 volts = []       # Voltage array
 lat_array = []
 lng_array =[]   # GPS coords arrays
+
 # Get the current date and time
 current_date = datetime.datetime.now().strftime('%Y-%m-%d')
 current_time = datetime.datetime.now().strftime('%H-%M-%S')
@@ -55,19 +57,20 @@ for directory in [circuit_data_directory, gps_data_directory]:
 for data_file in [circuit_data_file, gps_data_file]:
     with open(data_file, 'w') as file:
         pass  # This does nothing, but it effectively clears the file
+
 start_time = time()
 
 def probe_circuit():
-
     while (time() - start_time) < run_time:
         current_time = time() - start_time  # Get current time for circuit probing
         time_array.append(current_time)
 
         # Print Probing Values
-        print("Time: {:.2f} seconds".format(current_time))
-        print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, (amps_channel.voltage * -97.2 + 246)))
-        print("Voltage (Value, Actual * 5): {}   {:.5f}".format(volts_channel.value, volts_channel.voltage * 5))
-        print("\n")
+        if enablePrinting:
+            print("Time: {:.2f} seconds".format(current_time))
+            print("Amps (Value, Actual): {}   {:.5f}".format(amps_channel.value, (amps_channel.voltage * -97.2 + 246)))
+            print("Voltage (Value, Actual * 5): {}   {:.5f}".format(volts_channel.value, volts_channel.voltage * 5))
+            print("\n")
 
         amps.append(amps_channel.voltage * -97.2 + 246)
         volts.append((volts_channel.voltage) * 5)
@@ -75,24 +78,23 @@ def probe_circuit():
         sleep(0.01)  # Sleep for small time
 
 def probe_gps():
-    
     while (time() - start_time) < run_time:
         try:
             ser = serial.Serial("/dev/ttyAMA0", baudrate=9600, timeout=1)
-            dataout = pynmea2.NMEAStreamReader()
             newdata = ser.readline()
             if '$GPRMC' in str(newdata):
                 newmsg = pynmea2.parse(newdata.decode('utf-8'))
                 lat = newmsg.latitude
                 lng = newmsg.longitude
+
                 lat_array.append(lat)
                 lng_array.append(lng)
-
-                gps = "Latitude={} and Longitude={}".format(lat, lng)
-                print(gps) # Prints lat/lng info continuously
-                # Record GPS time
                 current_time = time() - start_time  # Get current time for circuit probing
                 gps_time_array.append(current_time)
+
+                if enablePrinting:
+                    gps = "Latitude={} and Longitude={}".format(lat, lng)
+                    print(gps) # Prints lat/lng info continuously
                 save_gps_data()
         except:
             print("Error Retrieving GPS")
