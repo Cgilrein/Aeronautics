@@ -2,14 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import re
 from geopy.distance import geodesic
+import time
 
 # Init global variables 
-t_gps = []
 t_circuit = []
 a = []
 v = []
-lat_lng = [] # list of tuple coordinates 
-lat, lng = [], []
 power = []
 
 
@@ -20,32 +18,27 @@ def read_data():
             t_circuit.append(float(data[0]))    
             a.append(float(data[1]))
             v.append(float(data[2]))
-    with open("./gps_data/2024-04-02__18-06-44__gps_data.txt", 'r') as f2:
-        for line in f2:
-            data = re.split(r'\s+', line.strip())
-            if len(data) >= 3:  # Ensure there are enough data elements
-                try:
-                    t_gps.append(float(data[0]))
-                    lat_lng.append((float(data[1]), float(data[2])))
-                except ValueError:
-                    print("Error parsing GPS data:", line.strip())
-            else:
-                print("Incomplete GPS data:", line.strip())
 
 
 def plot_position():
     meters_traveled = [0.0]  # Initialize with zero for the first data point
-    for coord in lat_lng:
-        lat.append(coord[0])
-        lng.append(coord[1])
-    # calculates net distance travelled using lat_lng and t_gps
-    for i in range(1, len(lat_lng)):
-        # Check if there are enough GPS coordinates available
-        if i < len(lat_lng):
-            distance = geodesic((lat[i-1], lng[i-1]), (lat[i], lng[i])).meters
-            meters_traveled.append(meters_traveled[-1] + distance)
+    time_array = [0.0]
+    data = np.loadtxt("./gps_data/2024-04-02__18-06-44__gps_data.txt")
+    # Filter out data points with latitude and longitude values of 0.0
+    valid_data_indices = np.where((data[:, 1] != 0.0) & (data[:, 2] != 0.0))
+    data = data[valid_data_indices]
+    # Extract time_array, latitude, and longitude from the data
+    time_array_np = data[:, 0]
+    lat = data[:, 1]
+    lng = data[:, 2]
 
-    plt.plot(t_gps, meters_traveled, label='Meters Traveled', marker='o')
+    # calculates net distance travelled using lat_lng and t_gps
+    for i in range(1, len(time_array_np)):
+        # Check if there are enough GPS coordinates available
+        distance = geodesic((lat[i-1], lng[i-1]), (lat[i], lng[i])).meters
+        meters_traveled.append(meters_traveled[-1] + distance)
+        time_array.append(time_array_np[i])
+    plt.plot(time_array, meters_traveled, label='Meters Traveled')
     plt.xlabel('Time')
     plt.ylabel('Meters Traveled')
     plt.title('Net Meters Traveled vs Time')
@@ -84,19 +77,32 @@ def plot_power():
 
 
 def plot_velocity():
-    velocity = [0.0]  
-    for i in range(1, len(lat_lng)):
-        distance = geodesic((lat[i-1], lng[i-1]), (lat[i], lng[i])).meters
-        time_diff = t_gps[i] - t_gps[i-1]
-        # dist=velocity/time_diff!!
-        if time_diff != 0:
-            velocity.append(distance / time_diff)
-        else:
-            velocity.append(0.0)
+    data = np.loadtxt("./gps_data/2024-04-02__18-06-44__gps_data.txt")
 
-    plt.plot(t_gps, velocity, label='Velocity', marker='o', color='green')
+    # Filter out data points with latitude and longitude values of 0.0
+    valid_data_indices = np.where((data[:, 1] != 0.0) & (data[:, 2] != 0.0))
+    data = data[valid_data_indices]
+
+    # Extract time_array, latitude, and longitude from the data
+    time_array = data[:, 0]
+    lat = data[:, 1]
+    lng = data[:, 2]
+
+    # Calculate speed in mph
+    velocity = []
+    for i in range(1, len(time_array)):
+        time_diff = time_array[i] - time_array[i-1]  # In seconds
+        distance_km = geodesic((lat[i-1], lng[i-1]), (lat[i], lng[i])).km
+        speed_km_s = distance_km / time_diff  # in km/s
+        speed_km_h = speed_km_s * 3600     # convert to km/h
+        
+        speed_miles_hour = speed_km_h * 0.621371
+
+        velocity.append(speed_miles_hour)
+
+    plt.plot(time_array[1:], velocity, label='Velocity', color='green')
     plt.xlabel('Time')
-    plt.ylabel('Velocity (m/s)')
+    plt.ylabel('Velocity (Miles per hour)')
     plt.title('Velocity vs Time')
     plt.legend()
     plt.show()
@@ -105,10 +111,10 @@ def plot_velocity():
 def main():
     read_data()
     plot_position()
-    #plot_amps()
-    #plot_volts()
+    plot_amps()
+    plot_volts()
     plot_velocity() #uncomment this if you want velocity vs time graph
-    #plot_power()
+    plot_power()
 
 if __name__ == "__main__":
     main()
